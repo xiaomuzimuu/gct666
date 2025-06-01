@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>两位数加减法教学</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- 配置Tailwind主题 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4361ee',
+            secondary: '#3f37c9',
+            accent: '#4895ef',
+            neutral: '#f8f9fa',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-shadow {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen font-sans">
+  <!-- 顶部信息栏 -->
+  <div class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-sm shadow-sm z-10">
+    <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+      <div class="text-sm text-gray-600">
+        <i class="fa fa-user-circle mr-1"></i> 姓名：龚珵彤 | <i class="fa fa-id-card mr-1"></i> 学号：230110118
+      </div>
+      <div class="text-sm font-medium text-primary">
+        <i class="fa fa-graduation-cap mr-1"></i> 小学数学教学
+      </div>
+    </div>
+  </div>
+
+  <!-- 主内容区 -->
+  <main class="container mx-auto px-4 py-24 md:py-32 max-w-3xl">
+    <div class="text-center mb-12">
+      <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-4">
+        两位数加减法练习
+      </h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        通过有趣的互动练习，掌握两位数加减法的运算技巧，提高计算速度和准确性。
+      </p>
+    </div>
+
+    <!-- 练习卡片 -->
+    <div class="bg-white rounded-2xl p-8 md:p-10 card-shadow transform transition-all hover:shadow-xl">
+      <div class="flex flex-col items-center justify-center">
+        <div class="text-3xl md:text-4xl font-bold mb-6">
+          <span id="num1" class="text-primary">25</span>
+          <span class="mx-3 text-gray-500">+</span>
+          <span id="num2" class="text-secondary">18</span>
+          <span class="mx-3 text-gray-500">=</span>
+          <input type="number" id="answer" placeholder="?" 
+                 class="w-20 h-12 text-3xl text-center border-b-2 border-gray-300 focus:border-primary focus:outline-none" />
+        </div>
+        
+        <button onclick="checkAnswer()" 
+                class="mt-8 px-8 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-full font-medium shadow-lg transform transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          <i class="fa fa-check-circle mr-2"></i> 提交答案
+        </button>
+        
+        <div id="result" class="mt-6 text-xl font-medium min-h-8 text-center"></div>
+      </div>
+    </div>
+    
+    <!-- 学习提示 -->
+    <div class="mt-12 bg-blue-50 rounded-xl p-6 border-l-4 border-primary">
+      <h3 class="text-lg font-semibold text-primary mb-2">
+        <i class="fa fa-lightbulb-o mr-2"></i> 解题小提示
+      </h3>
+      <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <li>先计算个位，再计算十位</li>
+        <li>加法满十进一，减法不够借一当十</li>
+        <li>计算完成后可以用逆运算检查答案</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-white border-t border-gray-200 py-6 mt-auto">
+    <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+      <p>© 2025 两位数加减法练习 | 小学数学教学资源</p>
+    </div>
+  </footer>
+
+  <script>
+    const num1 = document.getElementById('num1');
+    const num2 = document.getElementById('num2');
+    const answerInput = document.getElementById('answer');
+    const resultDiv = document.getElementById('result');
+    
+    // 生成随机两位数
+    function generateNumbers() {
+      const num1Value = Math.floor(Math.random() * 90) + 10;
+      const num2Value = Math.floor(Math.random() * 90) + 10;
+      num1.textContent = num1Value;
+      num2.textContent = num2Value;
+    }
+    
+    // 页面加载时初始化
+    window.onload = generateNumbers;
+    
+    // 检查答案
+    function checkAnswer() {
+      const correctAnswer = parseInt(num1.textContent) + parseInt(num2.textContent);
+      const userAnswer = parseInt(answerInput.value);
+      
+      if (isNaN(userAnswer)) {
+        resultDiv.textContent = '请输入有效的数字！';
+        resultDiv.className = 'mt-6 text-xl font-medium min-h-8 text-center text-red-500';
+      } else if (userAnswer === correctAnswer) {
+        resultDiv.textContent = '🎉 回答正确！真棒！';
+        resultDiv.className = 'mt-6 text-xl font-medium min-h-8 text-center text-green-500';
+        
+        // 添加正确时的动画效果
+        resultDiv.classList.add('animate-bounce');
+        setTimeout(() => {
+          resultDiv.classList.remove('animate-bounce');
+        }, 1000);
+      } else {
+        resultDiv.textContent = `❌ 回答错误，正确答案是 ${correctAnswer}。`;
+        resultDiv.className = 'mt-6 text-xl font-medium min-h-8 text-center text-red-500';
+      }
+      
+      // 生成新题目
+      setTimeout(generateNumbers, 1000);
+      answerInput.value = '';
+    }
+    
+    // 支持回车键提交答案
+    answerInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+  </script>
+</body>
+</html>
